@@ -3,7 +3,6 @@ API to access WiserRep data from command lines
 
 [![repo](https://img.shields.io/badge/GitHub-temuller%2Fwiserep_api-blue.svg?style=flat)](https://github.com/temuller/wiserep_api)
 [![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/temuller/wiserep_api/blob/master/LICENSE)
-[![Tests and Publish](https://github.com/temuller/wiserep_api/actions/workflows/main.yml/badge.svg)](https://github.com/temuller/wiserep_api/actions/workflows/main.yml)
 ![Python Version](https://img.shields.io/badge/Python-3.9%2B-blue)
 [![PyPI](https://img.shields.io/pypi/v/wiserep_api?label=PyPI&logo=pypi&logoColor=white)](https://pypi.org/project/wiserep_api/)
 [![DOI](https://zenodo.org/badge/635179400.svg)](https://zenodo.org/badge/latestdoi/635179400)
