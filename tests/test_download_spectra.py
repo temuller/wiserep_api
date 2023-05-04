@@ -1,11 +1,14 @@
 import os
 import glob
+import shutil
 import unittest
 import numpy as np
 import warnings
 from astropy.utils.exceptions import AstropyWarning
 from wiserep_api import download_target_spectra
 
+if os.path.isdir('spectra') is True:
+    shutil.rmtree('spectra')
 
 class TestDownloadSpectra(unittest.TestCase):
     def test_download_spectra(self):

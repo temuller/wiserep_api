@@ -44,7 +44,8 @@ def get_response(url):
     if response.status_code == 200:
         return response
     else:
-        print(http_errors[response.status_code])
+        print('Response error:', http_errors[response.status_code])
+        print(url)
         return None
 
 
@@ -65,27 +66,26 @@ def get_object_id(iau_name, verbose=False):
         or None if there is a problem of some other kind.
     """
     # look for the target ID in the search webpage
-    wiserep_search_url = "https://www.wiserep.org/search?name="
-    target_search_url = wiserep_search_url + iau_name
+    wiserep_search_url = "https://www.wiserep.org/search?"
+    search_name = iau_name.replace('+', '%2B')  # is this an html thing?
+    target_search_url = wiserep_search_url + f'name={search_name}&name_like=1'
     response = get_response(target_search_url)
     if response is None:
+        print(f'Could not load the webpage of {iau_name}')
         return None
 
-    split_text = response.text.split('href="/object/')
-    if len(split_text) < 2:
+    obj_id = None
+    split_text = response.text.split('="Click to Object page">')
+    for st in split_text:
+        if f'{iau_name}<' in st:
+            if 'href="/object/' in st:
+                obj_id = st.split('href="/object/')[1].split('"')[0]
+                break
+            
+    if verbose:
+        print("Object ID (Wiserep):", obj_id)
+
+    if obj_id is None:
         print(f"No target with this name found on Wiserep: {iau_name}")
-        return "Unknown"
-    else:
-        obj_id = None  # return None if object ID is not found
-        for line in split_text:
-            # check only the lines at the bottom of the search page
-            if "Click to Object page" in line:
-                if (f"{iau_name}</a>" in line) or (f"{iau_name}, " in line):
-                    obj_id = line.split('"')[0]
-        if verbose:
-            print("Object ID (Wiserep):", obj_id)
-
-        if obj_id is None:
-            print(f"No target with this name found on Wiserep: {iau_name}")
-
-        return obj_id
+    
+    return obj_id

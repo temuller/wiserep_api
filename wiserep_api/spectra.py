@@ -98,7 +98,7 @@ def download_target_spectra(
             txt_urls.append(url)
     if verbose is True:
         print(f"Found {len(txt_urls)} URLs with spectra (ASCII): {txt_urls}")
-
+        
     # FITS
     fits_urls = []
     split_text = response.text.split("https://")
