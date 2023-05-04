@@ -76,9 +76,26 @@ for sn in sne_list:
     snid.run_snid(directory, command=snid_commmand)
 ```
 
-### Getting the classification
+### Getting object's properties  
 
 The spectral type of a given target can also be retrived:
+
+```python
+from wiserep_api import get_target_property
+
+for prop in ['type', 'redshift', 'host', 'coords', 'coords_deg']:
+    value = get_target_property('2004eo', prop)
+    print(f'{prop}: {value}')
+```   
+```python
+type: SN Ia
+redshift: 0.015718
+host: NGC6928
+coords: 20:32:54.190 +09:55:42.71
+coords_deg: 308.22579 +9.92853
+```
+
+The spectral type of a given target can also be retrived with ``get_target_class``, which does a more "in-depth" search of the classification in case this is not found in the main properties:
 
 ```python
 from wiserep_api import get_target_class
