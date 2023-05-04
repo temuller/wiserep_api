@@ -22,13 +22,13 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/temuller/wiserep_api",
     packages=setuptools.find_packages(),
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     install_requires=requirements,
-    # package_data={"idsred": ["lamps/*", "standards/*", "extinction/*"]},
+    package_data={"wiserep_api": ["static/*"]},
     include_package_data=True,
 )
