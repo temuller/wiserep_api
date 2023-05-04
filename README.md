@@ -71,7 +71,7 @@ snid_commmand = 'snid inter=0 plot=0 aband=0 usetype=Ia-91T'
 
 for sn in sne_list:
     directory = os.path.join('spectra', sn)
-    snid.run_snid(directory)
+    snid.run_snid(directory, command=snid_commmand)
 ```
 
 ### Getting the classification
