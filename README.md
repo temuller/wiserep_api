@@ -6,6 +6,8 @@ API to access WiserRep data from command lines
 [![Tests and Publish](https://github.com/temuller/wiserep_api/actions/workflows/main.yml/badge.svg)](https://github.com/temuller/wiserep_api/actions/workflows/main.yml)
 ![Python Version](https://img.shields.io/badge/Python-3.9%2B-blue)
 [![PyPI](https://img.shields.io/pypi/v/wiserep_api?label=PyPI&logo=pypi&logoColor=white)](https://pypi.org/project/wiserep_api/)
+[![DOI](https://zenodo.org/badge/635179400.svg)](https://zenodo.org/badge/latestdoi/635179400)
+
 
 ## Installation
 
@@ -92,3 +94,20 @@ print(sn_type)
 ## Contributing
 
 To contribute, either open an issue or send a pull request (prefered option). You can also contact me directly (check my profile: https://github.com/temuller).
+
+## Citing WiseRep API
+
+If you make use of this code, please cite it:
+
+```code
+@software{tomas_e_muller_bravo_2023_7896352,
+  author       = {Tomás E. Müller Bravo},
+  title        = {temuller/wiserep\_api: First Official Release!},
+  month        = may,
+  year         = 2023,
+  publisher    = {Zenodo},
+  version      = {v0.1.5},
+  doi          = {10.5281/zenodo.7896352},
+  url          = {https://doi.org/10.5281/zenodo.7896352}
+}
+```
