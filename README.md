@@ -78,7 +78,7 @@ for sn in sne_list:
 
 ### Getting object's properties  
 
-The spectral type of a given target can also be retrived:
+The properties of a given object can be easily obtained:
 
 ```python
 from wiserep_api import get_target_property
@@ -95,7 +95,7 @@ coords: 20:32:54.190 +09:55:42.71
 coords_deg: 308.22579 +9.92853
 ```
 
-The spectral type of a given target can also be retrived with ``get_target_class``, which does a more "in-depth" search of the classification in case this is not found in the main properties:
+The spectral type of a given object can also be retrived with ``get_target_class``, which does a more "in-depth" search of the classification in case this is not found in the main properties:
 
 ```python
 from wiserep_api import get_target_class
