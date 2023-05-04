@@ -11,7 +11,7 @@ API to access WiserRep data from command lines
 
 It is recommended to install ``wiserep_api`` from pip:
 
-```code
+```python
 pip install wiserep_api
 ```
 or it can be installed from source in the usual way.
@@ -28,7 +28,7 @@ A list of targets can be downloaded for a given spectral type. The spectral type
 from wiserep_api.search import print_spectral_types, download_sn_list
 print_spectral_types()
 ```
-```code
+```python
 {'Other': 0, 'SN': 1, 'SN I': 2, 'SN Ia': 3, 'SN Ib': 4, 'SN Ic': 5, 'SN Ib/c': 6, 'SN Ic-BL': 7, 'SN Ib - Ca-rich': 8, 'SN Ibn': 9, 'SN II': 10, 'SN IIP': 11, 'SN IIL': 12, 'SN IIn': 13, 'SN IIb': 14, 'SN I-faint': 15, 'SN I-rapid': 16, 'SLSN-I': 18, 'SLSN-II': 19, 'SLSN-R': 20, 'Afterglow': 23, 'LBV': 24, 'ILRT': 25, 'Nova': 26, 'CV': 27, 'Varstar': 28, 'AGN': 29, 'Galaxy': 30, 'QSO': 31, 'Std-spec': 50, 'Gap': 60, 'Gap I': 61, 'Gap II': 62, 'SN impostor': 99, 'SN Ia-pec': 100, 'SN Ia-SC': 102, 'SN Ia-91bg-like': 103, 'SN Ia-91T-like': 104, 'SN Ia-02cx-like': 105, 'SN Ia-CSM': 106, 'SN Ib-pec': 107, 'SN Ic-pec': 108, 'SN II-pec': 110, 'SN IIn-pec': 112, 'TDE': 120, 'WR': 200, 'WR-WN': 201, 'WR-WC': 202, 'WR-WO': 203, 'M dwarf': 210}
 ```
 In this example, we can download 1991-T-like supernovae (SNe):
@@ -36,7 +36,7 @@ In this example, we can download 1991-T-like supernovae (SNe):
 ```python
 download_sn_list("SN Ia-91T-like")
 ```
-```code
+```python
 390 "SN Ia-91T-like" objects found!
 URL used: https://www.wiserep.org/search?&page=8&public=all&type[]=104
 ```
@@ -45,7 +45,7 @@ URL used: https://www.wiserep.org/search?&page=8&public=all&type[]=104
 
 The public available spectra can also be easily downloaded for a list of targets. These will be saved under the ``spectra`` directory, in a separate directory for each target:
 
-```code
+```python
 import numpy as np
 from wiserep_api import download_target_spectra
 
