@@ -1,5 +1,6 @@
+SNIa-CSM_wiserep.txt
 spectra/
-tests/
+wiserep/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
