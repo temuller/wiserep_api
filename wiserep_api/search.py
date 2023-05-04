@@ -29,6 +29,8 @@ def download_sn_list(spec_type):
     spec_type : int or str
         Spectral type, e.g. ``SN Ia`` or ``3``.
     """
+    if os.path.isdir("wiserep") is False:
+        os.mkdir("wiserep")
 
     global spectral_types
     if isinstance(spec_type, str):
@@ -39,8 +41,6 @@ def download_sn_list(spec_type):
 
     spec_directory = os.path.join("wiserep", str(spec_type))
     # create any missing directory
-    if os.path.isdir("wiserep") is False:
-        os.mkdir("wiserep")
     if os.path.isdir(spec_directory) is False:
         os.mkdir(spec_directory)
 
