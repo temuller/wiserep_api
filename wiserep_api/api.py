@@ -1,13 +1,15 @@
 import requests
 
 
-def get_response(url):
+def get_response(url, verbose=False):
     """Obtains the response from a given Wiserep URL.
 
     Parameters
     ----------
     url: str
         Wiserep URL.
+    verbose: bool, default 'False'
+        Whether to print the errors.
 
     Returns
     -------
@@ -44,12 +46,39 @@ def get_response(url):
     if response.status_code == 200:
         return response
     else:
-        print('Response error:', http_errors[response.status_code])
-        print(url)
+        if verbose is True:
+            print(http_errors[response.status_code], url)
         return None
+    
+def get_target_response(iau_name, verbose=False):
+    """Obtains the response from a given target's Wiserep URL.
+
+    Parameters
+    ----------
+    iau_name: str
+        IAU name of the target (e.g. 2020xne).
+    verbose: bool, default 'False'
+        Whether to print the errors.
+
+    Returns
+    -------
+    response: requests.Response
+        Response object.
+    """
+    target_url = f"https://www.wiserep.org/iauname/{iau_name}"
+    response = get_response(target_url, verbose)
+    if response is None:
+        # try internal survey name
+        target_url = f"https://www.wiserep.org/internal-name/{iau_name}"
+        response = get_response(target_url, verbose)
+
+        if response is None:
+            return None
+        
+    return response
 
 
-def get_object_id(iau_name, verbose=False):
+def _get_object_id(iau_name, verbose=False):
     """Obtains the objects's Wiserep ID.
 
     Parameters

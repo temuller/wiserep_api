@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from astropy.io import fits
-from wiserep_api.api import get_response, get_object_id
+from wiserep_api.api import get_response, get_target_response
 
 
 def exclude_include(url, exclude=None, include=None):
@@ -65,7 +65,7 @@ def download_target_spectra(
         Files with the given string patterns are inxcluded.
         Cannot be given together with 'exclude'.
     verbose: bool, default 'False'
-        If True, print some of the extra information
+        If 'True', print some of the extra information.
 
     Returns
     -------
@@ -77,16 +77,8 @@ def download_target_spectra(
 
     assert file_type in [None, "ascii", "fits"], "not a valide file type"
 
-    # look for the target ID in the search webpage
-    obj_id = get_object_id(iau_name, verbose)
-    if (obj_id is None) or (obj_id == "Unknown"):
-        return obj_id
-
-    # target's webpage
-    target_url = f"https://www.wiserep.org/object/{obj_id}"
-    response = get_response(target_url)
-    if response is None:
-        return None
+    # target's url
+    response = get_target_response(iau_name, verbose)
 
     # search for spectra URLs
     # ASCII

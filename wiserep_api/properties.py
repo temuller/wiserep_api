@@ -1,7 +1,7 @@
-from wiserep_api.api import get_response, get_object_id
+from wiserep_api.api import get_response, get_target_response
 
 def get_target_property(iau_name, property_name, verbose=False):
-    """Obtains the target's property from Wiserep.
+    """Obtains the target's properties from Wiserep.
 
     Properties: ``type``, ``redshift``, ``host``, ``coords``
     and ``coords_deg``.
@@ -10,24 +10,18 @@ def get_target_property(iau_name, property_name, verbose=False):
     ----------
     iau_name: str
         IAU name of the target (e.g. 2020xne).
-    property_name : str
-        Name of the target's property.
+    property_name : str or list
+        Name of the target's property or multiple properties.
     verbose: bool, default 'False'
         If True, print some of the intermediate information
 
     Returns
     -------
-    target_property: str or float
-        The value of the target's property.
+    target_properties: str, float or list
+        The values of the target's properties.
     """
-    # look for the target ID in the search webpage
-    obj_id = get_object_id(iau_name, verbose)
-    if obj_id is None:
-        return None
-
     # target's webpage
-    target_url = f"https://www.wiserep.org/object/{obj_id}"
-    response = get_response(target_url)
+    response = get_target_response(iau_name, verbose)
     if response is None:
         return None
 
@@ -37,28 +31,41 @@ def get_target_property(iau_name, property_name, verbose=False):
                        'coords':'RA/DEC (J2000)',
                        'coords_deg':'RA/DEC (J2000)',
                        } 
-    assert property_name in properties_dict.keys(), "Not a valid property name!"
-    prop_str = properties_dict[property_name]
-
-    # search for the property
-    if property_name=='coords':
-        split_text = response.text.split(f'{prop_str}</span><b><div class="value">')
-    elif property_name=='coords_deg':
-        split_text = response.text.split(f'{prop_str}</span><b><div class="value">')
-        if len(split_text)>1:
-            split_text = split_text[1].split('div class="alter-value">')
+    
+    if isinstance(property_name, str):
+        properties_list = [property_name]
     else:
-        split_text = response.text.split(f'{prop_str}</span><div class="value"><b>')
+        properties_list = property_name
 
-    if len(split_text) > 1:
-        target_property = split_text[1].split("<")[0]
-    else:
-        target_property = ''
-        
-    if property_name=='redshift' and len(target_property)>0:
-        target_property = float(target_property)
+    target_properties = []
+    for property in properties_list:
+        assert property in properties_dict.keys(), f"Not a valid property: '{property}'"
+        prop_str = properties_dict[property]
 
-    return target_property
+        # search for the property
+        if property=='coords':
+            split_text = response.text.split(f'{prop_str}</span><b><div class="value">')
+        elif property=='coords_deg':
+            split_text = response.text.split(f'{prop_str}</span><b><div class="value">')
+            if len(split_text)>1:
+                split_text = split_text[1].split('div class="alter-value">')
+        else:
+            split_text = response.text.split(f'{prop_str}</span><div class="value"><b>')
+
+        if len(split_text) > 1:
+            target_property = split_text[1].split("<")[0]
+        else:
+            target_property = ''
+            
+        if property=='redshift' and len(target_property)>0:
+            target_property = float(target_property)
+
+        target_properties.append(target_property)
+
+    if len(target_properties)==1:
+        target_properties = target_properties[0]
+
+    return target_properties
 
 def get_target_class(iau_name, verbose=False):
     """Obtains the target's classification (type) from Wiserep.
@@ -75,16 +82,8 @@ def get_target_class(iau_name, verbose=False):
     target_class: str
         The target's classification. Returns 'Unknown' if not found.
     """
-    # look for the target ID in the search webpage
-    obj_id = get_object_id(iau_name, verbose)
-    if (obj_id is None) or (obj_id == "Unknown"):
-        return obj_id
-
     # target's webpage
-    target_url = f"https://www.wiserep.org/object/{obj_id}"
-    response = get_response(target_url)
-    if response is None:
-        return None
+    response = get_target_response(iau_name, verbose)
 
     # search for classification
     split_text = response.text.split('Type</span><div class="value"><b>')
