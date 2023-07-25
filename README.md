@@ -94,6 +94,13 @@ coords: 20:32:54.190 +09:55:42.71
 coords_deg: 308.22579 +9.92853
 ```
 
+Or you can get multiple properties at once:
+
+```python
+properties = ['type', 'redshift', 'host', 'coords', 'coords_deg']
+values = get_target_property('2004eo', properties)
+```
+
 The spectral type of a given object can also be retrived with ``get_target_class``, which does a more "in-depth" search of the classification in case this is not found in the main properties:
 
 ```python
