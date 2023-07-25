@@ -16,6 +16,14 @@ class TestProperties(unittest.TestCase):
             result = get_target_property(target, prop)
             np.testing.assert_string_equal(str(result), value)
 
+        # multiple properties at once
+        properties = list(properties_dict.keys())
+        values = get_target_property(target, properties)
+        expected_props = ['SN Ia', 0.015718, 'NGC6928', 
+                          '20:32:54.190 +09:55:42.71', '308.22579 +9.92853']
+
+        assert values==expected_props, "The values retrieved do not match the expected ones" 
+
 class TestClassification(unittest.TestCase):
     def test_classification(self):
         sn_type = get_target_class("2004eo")
