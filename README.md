@@ -124,7 +124,7 @@ If you make use of this code, please cite it:
 
 ```code
 @software{tomas_e_muller_bravo_2023_7896352,
-  author       = {Tomás E. Müller Bravo},
+  author       = {{M{\"u}ller-Bravo}, Tom{\'a}s E.},
   title        = {temuller/wiserep\_api: First Official Release!},
   month        = may,
   year         = 2023,
