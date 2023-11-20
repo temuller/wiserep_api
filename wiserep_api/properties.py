@@ -44,8 +44,12 @@ def get_target_property(iau_name, property_name, verbose=False):
 
         # search for the property
         if property=='coords':
+            if prop_str not in response.text:
+                prop_str = prop_str.replace('J2000', '')  # relatively new targets do not have coordinates epoch
             split_text = response.text.split(f'{prop_str}</span><b><div class="value">')
         elif property=='coords_deg':
+            if prop_str not in response.text:
+                prop_str = prop_str.replace('J2000', '')
             split_text = response.text.split(f'{prop_str}</span><b><div class="value">')
             if len(split_text)>1:
                 split_text = split_text[1].split('div class="alter-value">')
