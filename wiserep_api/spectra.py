@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from io import StringIO
 from astropy.io import fits
 from wiserep_api.api import get_response, get_target_response
 
@@ -101,10 +102,18 @@ def download_target_spectra(
     if verbose is True:
         print(f"Found {len(fits_urls)} URLs with spectra (FITS): {fits_urls}")
 
+    # retrieve table with spectra information
+    spec_table = pd.read_html(StringIO(response.text), match='Spec. ID')[0]
+    if isinstance(spec_table['Spec. ID'], pd.core.frame.DataFrame) is True:
+        # from multi-index to the usual dataframe
+        spec_table = pd.DataFrame({col[0]:spec_table[col[0]][col[1]].values for col in spec_table.columns})
+    
     # download ASCII spectra
     if file_type == "ascii" or file_type is None:
+        ascii_files = []
         for url in txt_urls:
-            # skip files
+            # skip filesspec_df = spec_df[::2]  # every other row is just crap
+
             skip = exclude_include(url, exclude, include)
             if skip is True:
                 if verbose is True:
@@ -141,15 +150,20 @@ def download_target_spectra(
                 skiprows = None
             spec_df = pd.read_csv(
                 outfile,
-                delim_whitespace=True,
+                sep='\s+',
                 names=["wave", "flux", "flux_err"],
                 comment="#",
                 skiprows=skiprows,
             )
             spec_df.to_csv(outfile, index=False)
 
+            ascii_files.append(basename)
+        # update table with the extracted files online
+        spec_table = spec_table[spec_table['Spectrum ascii File'].isin(ascii_files)]
+
     # download FITS spectra
     if file_type == "fits" or file_type is None:
+        fits_files = []
         for url in fits_urls:
             # skip files
             skip = exclude_include(url, exclude, include)
@@ -173,3 +187,18 @@ def download_target_spectra(
                 overwrite = False
 
             hdu.writeto(outfile, overwrite=overwrite, output_verify="ignore")
+
+            fits_files.append(basename)
+        # The fits files are not always available, so only update the table
+        # according to these if the ascii files were not downloaded
+        if 'ascii_files' not in locals():
+            spec_table = spec_table[spec_table['Spectrum fits File'].isin(fits_files)]
+
+    # save spectra information
+    # if 'obj_dir' variable is not defined, it means that no spectrum was
+    # downloaded
+    if 'obj_dir' in locals():
+        spec_file = os.path.join(obj_dir, 'downloaded_spectra_info.csv') 
+        # remove crap | sort_index is to avoid warning
+        spec_table = spec_table.drop(columns=['Select'], axis=1) 
+        spec_table.to_csv(spec_file, index=False)

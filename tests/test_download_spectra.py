@@ -18,7 +18,7 @@ class TestDownloadSpectra(unittest.TestCase):
             download_target_spectra(target)
         files = glob.glob(os.path.join("spectra", target, "*"))
 
-        txt_files = [file for file in files if ".fits" not in file]
+        txt_files = [file for file in files if ".fits" not in file and ".csv" not in file]
         err_msg = "Number of files does not match (ASCII)"
         np.testing.assert_equal(len(txt_files), 5, err_msg)
 
@@ -33,7 +33,7 @@ class TestDownloadSpectra(unittest.TestCase):
             download_target_spectra(target, exclude=["PESSTO"])
         files = glob.glob(os.path.join("spectra", target, "*"))
 
-        txt_files = [file for file in files if ".fits" not in file]
+        txt_files = [file for file in files if ".fits" not in file and ".csv" not in file]
         err_msg = "There should be no files downloaded (ASCII)"
         np.testing.assert_equal(len(txt_files), 0, err_msg)
 
@@ -48,7 +48,7 @@ class TestDownloadSpectra(unittest.TestCase):
             download_target_spectra(target, include=["WiFeS"])
         files = glob.glob(os.path.join("spectra", target, "*"))
 
-        txt_files = [file for file in files if ".fits" not in file]
+        txt_files = [file for file in files if ".fits" not in file and ".csv" not in file]
         err_msg = "Number of files does not match (ASCII)"
         np.testing.assert_equal(len(txt_files), 2, err_msg)
 
