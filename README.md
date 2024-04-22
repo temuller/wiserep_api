@@ -1,5 +1,5 @@
 # WiseRep API
-API to access WiserRep data from command lines
+API to access WiserRep data
 
 [![repo](https://img.shields.io/badge/GitHub-temuller%2Fwiserep_api-blue.svg?style=flat)](https://github.com/temuller/wiserep_api)
 [![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/temuller/wiserep_api/blob/master/LICENSE)
