@@ -106,7 +106,18 @@ def download_target_spectra(
     spec_table = pd.read_html(StringIO(response.text), match='Spec. ID')[0]
     if isinstance(spec_table['Spec. ID'], pd.core.frame.DataFrame) is True:
         # from multi-index to the usual dataframe
-        spec_table = pd.DataFrame({col[0]:spec_table[col[0]][col[1]].values for col in spec_table.columns})
+        spec_dict = {col[0]:None for col in spec_table.columns}
+
+        for col in spec_dict.keys():
+            series = spec_table[col].copy()
+            for sub_col in spec_table[col].columns:
+                series = series[sub_col]
+            spec_dict[col] = series.values
+
+        spec_table = pd.DataFrame(spec_dict)
+        # remove extra columns
+        columns = [col for col in spec_table.columns if 'Unnamed' not in col]
+        spec_table = spec_table[columns]
     
     # download ASCII spectra
     if file_type == "ascii" or file_type is None:
