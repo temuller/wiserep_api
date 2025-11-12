@@ -146,7 +146,7 @@ def download_target_spectra(
             with open(outfile, "w") as file:
                 file.write(response.text)
 
-            if response.text.startswith("BITPIX") or response.text.startswith("SIMPLE"):
+            if response.text.startswith("BITPIX") or response.text.startswith("SIMPLE") or ("Keck1_LRIS" in basename):
                 # file includes header
                 for i, line in enumerate(response.text.split("\n")):
                     split_line = line.split()
@@ -154,15 +154,19 @@ def download_target_spectra(
                         _ = float(split_line[0])
                         _ = float(split_line[1])
                         skiprows = i
+                        columns = response.text.split("\n")[i-1].replace('#', '').split()
+                        if len(columns) <= 3:
+                            columns = ["wave", "flux", "flux_err"]
                         break
                     except:
                         continue
             else:
+                columns = ["wave", "flux", "flux_err"]
                 skiprows = None
             spec_df = pd.read_csv(
                 outfile,
                 sep='\s+',
-                names=["wave", "flux", "flux_err"],
+                names=columns,
                 comment="#",
                 skiprows=skiprows,
             )
