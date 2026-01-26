@@ -215,5 +215,5 @@ def download_target_spectra(
     if 'obj_dir' in locals():
         spec_file = os.path.join(obj_dir, 'downloaded_spectra_info.csv') 
         # remove crap | sort_index is to avoid warning
-        spec_table = spec_table.drop(columns=['Select'], axis=1) 
+        spec_table = spec_table.drop(columns=['Select']) 
         spec_table.to_csv(spec_file, index=False)
